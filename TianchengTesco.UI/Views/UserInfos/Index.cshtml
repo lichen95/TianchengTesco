@@ -1,0 +1,51 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="icon" href="~/Content/images/bitbug_favicon.ico" mce_href="~/Content/images/bitbug_favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="~/Content/images/bitbug_favicon.ico" mce_href="~/Content/images/bitbug_favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width" />
+    <title>天成易购</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/page.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+    <link href="~/Content/css/css/buttons.css" rel="stylesheet" />
+    <link href="~/Content/css/css.css" rel="stylesheet" />
+    <script type="text/javascript" src="~/Content/js/js.js"></script>
+    @*<script src="~/Content/js/wb.js" type="text/javascript" ></script>*@
+
+</head>
+<body>
+ 
+    <div class="mianCont">
+        <iframe width="900" height="110" scrolling="no" frameborder="0" src="Head" id="top" name="top" ></iframe>
+        <div class="rdPro">
+            <iframe id="main" name="main" width="900" height="900" scrolling="no" frameborder="0" src="Main"></iframe>
+        </div><!--rdPro/-->
+
+        <div class="hengfu">
+            <img src="~/Content/images/images/hengfu2.jpg" width="978" height="97" />
+        </div><!--hengfu/-->
+
+
+
+        <iframe width="1000" height="300" scrolling="no" frameborder="0" src="Foot"></iframe>
+
+    </div><!--mianCont/-->
+    <a href="#" class="backTop">&nbsp;</a>
+</body>
+</html>
+<script>
+$(function(){
+document.oncontextmenu = function(){
+    event.returnValue = false;
+}
+})
+</script>

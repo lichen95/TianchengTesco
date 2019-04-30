@@ -1,0 +1,15 @@
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\bin\Debug\TianchengTesco.Common.dll
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\bin\Debug\TianchengTesco.Common.pdb
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\bin\Debug\log4net.dll
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\obj\Debug\TianchengTesco.Common.csproj.CoreCompileInputs.cache
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\obj\Debug\TianchengTesco.Common.csproj.CopyComplete
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\obj\Debug\TianchengTesco.Common.dll
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\obj\Debug\TianchengTesco.Common.pdb
+F:\小二\TianchengTesco\TianchengTesco.Common\bin\Debug\TianchengTesco.Common.dll
+F:\小二\TianchengTesco\TianchengTesco.Common\bin\Debug\TianchengTesco.Common.pdb
+F:\小二\TianchengTesco\TianchengTesco.Common\bin\Debug\log4net.dll
+F:\小二\TianchengTesco\TianchengTesco.Common\obj\Debug\TianchengTesco.Common.csproj.CoreCompileInputs.cache
+F:\小二\TianchengTesco\TianchengTesco.Common\obj\Debug\TianchengTesco.Common.csproj.CopyComplete
+F:\小二\TianchengTesco\TianchengTesco.Common\obj\Debug\TianchengTesco.Common.dll
+F:\小二\TianchengTesco\TianchengTesco.Common\obj\Debug\TianchengTesco.Common.pdb
+F:\小二\TianchengTesco\TianchengTesco.Common\obj\Debug\TianchengTesco.Common.csprojAssemblyReference.cache

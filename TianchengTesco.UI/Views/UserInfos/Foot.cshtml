@@ -1,0 +1,59 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Foot</title>
+    <link href="~/Content/css/css.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+   
+</head>
+<body>
+    <div class="inHelp">
+        <div class="inHLeft">
+            <h4>帮助中心</h4>
+            <ul class="inHeList">
+                <li><a href="javascript:void(0)" onclick="window.open('/UserInfos/Help', 'main')">购物指南</a></li>
+                <li><a href="javascript:void(0)" onclick="window.open('/UserInfos/Help', 'main')">支付方式</a></li>
+                <li><a href="javascript:void(0)" onclick="window.open('/UserInfos/Help', 'main')">售后服务</a></li>
+                <li><a href="javascript:void(0)" onclick="window.open('/UserInfos/Contact', 'main')">企业简介</a></li>
+                <div class="clears"></div>
+            </ul><!--inHeList/-->
+        </div><!--inHLeft/-->
+        <div class="inHLeft">
+            <h4>会员服务</h4>
+            <ul class="inHeList">
+                <li><a href="javascript:void(0)" onclick="parent.location.href='/UserInfos/Add'">会员注册</a></li>
+                <li><a href="javascript:void(0)" onclick="parent.location.href='/UserInfos/Login'">会员登录</a></li>
+                <li><a href="javascript:void(0)" onclick="window.open('/UserInfos/Car', 'main')">购物车</a></li>
+                <li><a href="javascript:void(0)" onclick="window.open('/UserInfos/MyOrder', 'main')">我的订单</a></li>
+                <div class="clears"></div>
+            </ul><!--inHeList/-->
+        </div><!--inHLeft/-->
+        <div class="inHRight">
+            <h4>全国统一免费服务热线</h4>
+            <div class="telBox">400-0000-0000</div>
+            <div class="weibo">
+                <wb:follow-button uid="2991975565" type="red_1" width="67" height="24"></wb:follow-button>
+            </div>
+        </div><!--inHRight/-->
+        <div class="clears"></div>
+    </div><!--inHelp/-->
+    <div class="footer">
+        <p>
+            <a href="#">进入天成易购官网</a>&nbsp;|&nbsp;
+            <a href="javascript:void(0)" onclick="window.open('/UserInfos/Main', 'main')">商城首页</a>&nbsp;|&nbsp;
+            <a href="javascript:void(0)" onclick="window.open('/UserInfos/Help', 'main')">帮助中心</a>
+</p>
+        <p>
+            版权所有：北京天成科技有限公司 版权所有  Copyright 2015-2018   京ICP备00000001号
+        </p>
+    </div><!--footer/-->
+</body>
+</html>

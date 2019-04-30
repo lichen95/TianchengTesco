@@ -1,0 +1,64 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>天成易购会员中心</title>
+    <link type="text/css" href="~/Content/css/css.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script type="text/javascript" src="~/Content/js/jquery.js"></script>
+    <script type="text/javascript" src="~/Content/js/js.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script charset="utf-8" type="text/javascript" src="~/Content/js/wb.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".vipNav dd:eq(2)").show();
+        })
+    </script>
+</head>
+
+<body>
+    <div class="mianCont">
+
+        <div class="positions">
+            当前位置：<a href="index.html">首页</a> &gt; <a href="vip.html">会员中心</a>
+            &gt; <a href="#" class="posCur">我的订单</a>
+        </div><!--positions/-->
+        <div class="cont">
+            <div class="contLeft" id="contLeft">
+                <h3 class="leftTitle">会员中心</h3>
+                <dl class="helpNav vipNav">
+                    <dt>我的主页</dt>
+                    <dd>
+                        <a href="vip.html">个人中心</a>
+                        <a href="vipOrder.html">我的订单</a>
+                    </dd>
+                    <dt>账户设置</dt>
+                    <dd>
+                        <a href="vipMy.html">个人信息</a>
+                        <a href="vipPwd.html">密码修改</a>
+                        <a href="vipAdress.html">收货地址</a>
+                    </dd>
+                    <dt>客户服务</dt>
+                    <dd>
+                        <a href="vipExit.html">网站使用条款</a>
+                        <a href="vipTuihuo.html">网站免责声明</a>
+                        <a href="message.html" class="vipCur">在线留言</a>
+                    </dd>
+                </dl><!--helpNav/-->
+            </div><!--contLeft/-->
+            <div class="contRight">
+                <h2 class="oredrName">订单详情</h2>
+                
+            </div><!--contRight/-->
+            <div class="clears"></div>
+        </div><!--cont/-->
+    </div><!--mianCont/-->
+    <a href="#" class="backTop">&nbsp;</a>
+</body>
+</html>

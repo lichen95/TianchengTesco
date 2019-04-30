@@ -1,0 +1,282 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Item</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/page.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+    <style>
+        /*positions*/
+        .positions {
+            height: 55px;
+            line-height: 55px;
+            padding-left: 25px;
+            background: #fff url(../images/images/home2.png) 5px center no-repeat;
+        }
+
+            .positions a {
+                color: #333;
+            }
+
+                .positions a:hover, .positions .posCur {
+                    color: #F00;
+                }
+    </style>
+</head>
+<body>
+    <div class="positions" style="background:#F8F8F8">
+        <img src="~/Content/images/images/home2.png" />当前位置：<a href="javascript:void(0)"  onclick="window.open('/UserInfos/Main', 'main')" >首页</a> &gt; <a href="#" class="posCur">商品详情</a>
+    </div><!--positions/-->
+    <div>
+        <form id="form0">
+            <input type="hidden" name="GId" value="@Request.QueryString["GId"]" />
+            <input type="hidden" name="UId" value="" />
+            <table>
+                <tr>
+                    <td id="showImg"></td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>商品名称:</td>
+                                <td id="showName"></td>
+                            </tr>
+                            <tr>
+                                <td>商品价格:</td>
+                                <td id="showPrice"></td>
+                            </tr>
+                            <tr>
+                                <td>购买数量:</td>
+                                <td id="showNum"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="button" value="加入购物车" onclick="addCar()" />&nbsp;
+                                    <input type="button" value="立即购买" onclick="addOrder()" />&nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <h3>用户评论</h3>
+        <table id="Comments"></table>
+        <div style="clear:both">
+            <input type="button" value="首页" onclick="FirstPage()" />&nbsp;
+            <input type="button" value="上一页" onclick="PrivePage()" />&nbsp;
+            <input type="button" value="下一页" onclick="NextPage()" />&nbsp;
+            <input type="button" value="尾页" onclick="LastPage()" />&nbsp;
+        </div>
+        <br />
+    </div>
+</body>
+</html>
+<script>
+    var num = 1;//数量
+    var price = 0;//单价
+    var nums = 0;//实际库存
+    $(function () {
+        show();
+        showComments();
+        $("[name=UId]").val($.cookie('UserId'));
+    })
+    //显示商品详情
+    function show() {
+        var index = 0;
+         $.ajax({
+             url: "http://139.159.183.14:8888/TianchengTesco/QueryByIdGoods?Id="+@Request.QueryString["GId"],
+             type: "get",
+             beforeSend: function () {
+                 //loading层 var index = 0;
+                  index=layer.load(1, {
+                     shade: [0.1, '#fff'] //0.1透明度的白色背景
+                 });
+             },
+             complete: function () {
+                 layer.close(index);
+             },
+            success: function (d) {
+                console.log(d);
+                $("#showImg").append('<img src="' + d.Img + '" width="400" height="400" />');
+                $("#showName").append('<h2>' + d.Name + '</h2>');
+                $("#showPrice").append('<h3>' + d.Price + '元</h3>');
+                $("#showNum").append('<span onclick="jian()">-</span>&nbsp;<input type="text" style="width:30px" name="Nums" />&nbsp;<span onclick="jia()">+</span>');
+
+                price = d.Price;
+                nums = d.Num;
+                $("[name=Nums]").val(num);
+             }
+        })
+    }
+    //减数量
+    function jian() {
+        if (num - 1 < 0) {
+            return;
+        }
+        num -= 1
+        $("[name=Nums]").val(num);
+        $("#showPrice").html(num * price + "元");
+    }
+    //加数量
+    function jia() {
+        if (num + 1 > nums) {
+            layer.msg('这已经是当前商品最大库存了', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        num += 1
+        $("[name=Nums]").val(num);
+        $("#showPrice").html(num * price+"元");
+    }
+    //加入购物车
+    function addCar() {
+        if ($.cookie('UserId') > 0) {
+            if ($("[name=Nums]").val() <= 0) {
+                layer.msg('请输入要购买的数量', {
+                    time: 20000//20s后自动关闭
+                }); 
+                return;
+            }
+            var index = 0;
+            $.ajax({
+                url: "http://139.159.183.14:8888/TianchengTesco/AddCars",
+                type: "post",
+                data: $("#form0").serialize(),
+                beforeSend: function () {
+                    //loading层 var index = 0;
+                    index = layer.load(1, {
+                        shade: [0.1, '#fff'] //0.1透明度的白色背景
+                    });
+                },
+                complete: function () {
+                    layer.close(index);
+                },
+                success: function (d) {
+                    console.log(d);
+                    if (d > 0) {
+                        layer.msg('加入购物车成功', {
+                            time: 20000//20s后自动关闭
+                        }); 
+                    }
+                    else {
+                        layer.msg('加入购物车失败', {
+                            time: 20000//20s后自动关闭
+                        }); 
+                    }
+                }
+            })
+        }
+        else {
+            loginLayer();
+        }
+    }
+    //立即购买
+    function addOrder() {
+        if ($.cookie('UserId') > 0) {
+            if ($("[name=Nums]").val() <= 0) {
+                layer.msg('请输入要购买的数量', {
+                    time: 20000//20s后自动关闭
+                }); 
+                return;
+            }
+            var index = 0;
+            $.ajax({
+                url: "http://139.159.183.14:8888/TianchengTesco/AddOrders",
+                type: "post",
+                data: $("#form0").serialize(),
+                beforeSend: function () {
+                    //loading层 var index = 0;
+                    index = layer.load(1, {
+                        shade: [0.1, '#fff'] //0.1透明度的白色背景
+                    });
+                },
+                complete: function () {
+                    layer.close(index);
+                },
+                success: function (d) {
+                    console.log(d);
+                    if (d > 0) {
+                        layer.msg('订单提交成功', {
+                            time: 20000, //20s后自动关闭
+                            btn: ['知道了'],
+                            end: function () {
+                                window.open('/UserInfos/Pay?Ids=' + d, 'main');
+                            }
+                        });
+                       
+                    }
+                    else {
+                        layer.msg('订单提交失败', {
+                            time: 20000//20s后自动关闭
+                        }); 
+                    }
+                }
+             })
+        }
+        else {
+            loginLayer();
+        }
+    }
+    function loginLayer() {
+        //询问框
+        layer.confirm('您还没有登陆，确定登陆吗？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            layer.open({
+                type: 2,//模态窗种类
+                skin: "layui-layer-rim",
+                title: "用户登录",
+                area: ["400px", "500px"],
+                maxmin: true,
+                //拼接字符串自定义名称
+                content: '/UserInfos/loginLayer?gid='+@Request.QueryString["GId"]
+            });
+            }, function () {
+                layer.msg('再考虑一下', {
+                    time: 20000 //20s后自动关闭
+                });
+            });
+    }
+    //显示该商品的评论信息
+    function showComments() {
+        var index = 0;
+         $.ajax({
+             url: "http://139.159.183.14:8888/TianchengTesco/QueryComments?pageIndex=" + pageIndex + "&UName=&GName=&GId="+@Request.QueryString["GId"],
+             type: "post",
+             beforeSend: function () {
+                 //loading层 var index = 0;
+                 index = layer.load(1, {
+                     shade: [0.1, '#fff'] //0.1透明度的白色背景
+                 });
+             },
+             complete: function () {
+                 layer.close(index);
+             },
+            success: function (d) {
+                console.log(d);
+                $("#Comments").html("");
+                pageIndex = d.PageIndex;
+                pageCount = d.PageCount;
+                for (var i = 0; i < d.Data.length; i++) {
+                    var tr = '<tr>'
+                        + '<td>' + d.Data[i].UName + ':' + d.Data[i].Remark + '</td>'
+                        + '</tr>'
+                        + '<tr>'
+                        + '<td>店家回复:' + d.Data[i].Answer + '</td>'
+                        + '</tr>'
+                    $("#Comments").append(tr);
+                }
+            }
+        })
+    }
+</script>

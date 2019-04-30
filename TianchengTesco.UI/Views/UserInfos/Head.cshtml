@@ -1,0 +1,83 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Head</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <link href="~/Content/css/css.css" rel="stylesheet" />
+    <style>
+        .a1 {
+            float: left;
+        }
+
+        #spRight0 {
+            float: right;
+            margin: 50px 100px 0px 0px;
+        }
+
+        #spRight {
+            display: none;
+            float: right;
+            margin: 50px 100px 0px 0px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <span>
+            您好！欢迎来到天成易购商城!
+        </span>
+         <br /><br />
+        <h2 class="a1" onclick="window.open('/UserInfos/Main', 'main')"><img src="~/Content/images/0ee971fa5c5384fbc137e2f838a35dfa.png" width="150" height="50" onclick="window.open('/UserInfos/Main', 'main')" />天成易购</h2>
+        <span class="topRight">
+            
+            <span id="spRight0">
+                <a href="javascript:void(0)" onclick="login()">请登录</a>&nbsp;|
+                <a href="javascript:void(0)" onclick="window.open('/UserInfos/Contact', 'main')">联系我们</a>&nbsp;
+            </span>
+            <span id="spRight">
+                欢迎 <span id="UName"></span>登录&nbsp;|
+                <a href="javascript:void(0)" onclick="window.open('/UserInfos/Car', 'main')">购物车</a>&nbsp;|
+                <a href="javascript:void(0)" onclick="window.open('/UserInfos/MyOrder', 'main')">我的订单</a>&nbsp;|
+                <a href="javascript:void(0)" onclick="window.open('/UserInfos/Contact', 'main')">联系我们</a>&nbsp;|
+                <a href="javascript:void(0)" onclick="unlogin()">退出登录</a>
+            </span>
+
+        </span>
+
+
+    </div><!--top/-->
+</body>
+</html>
+<script>
+    $(function () {
+        var UId = $.cookie('UserId');
+        console.log(UId);
+        var UName = $.cookie('UserName');
+        if (UId > 0) {
+            $("#spRight0").hide();
+            $("#spRight").show();
+            $("#UName").html(UName);
+        }       
+    })
+    //登陆
+    function login() {
+        parent.location.href = '/UserInfos/Login';
+    }
+    //退出登录
+    function unlogin() {
+        $.cookie('UserId', '', {
+            path: '/'
+        })
+        parent.location.href = '/UserInfos/Index';
+        $("#spRight0").show();
+        $("#spRight").hide();
+    }
+</script>

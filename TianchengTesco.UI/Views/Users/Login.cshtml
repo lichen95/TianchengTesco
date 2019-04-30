@@ -1,0 +1,129 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <link href="~/Content/css/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/css/css/login.css" rel="stylesheet" />
+    <link href="~/Content/css/css/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
+
+    <link rel="icon" href="~/Content/images/bitbug_favicon.ico" mce_href="~/Content/images/bitbug_favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="~/Content/images/bitbug_favicon.ico" mce_href="~/Content/images/bitbug_favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width" />
+    <title>天成易购后台系统_用户登录</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+    <script src="~/Content/js/yzmJS.js"></script>
+    <link href="~/Content/css/yzmStyle.css" rel="stylesheet" />
+</head>
+
+<body waid71fa0d88-5390-4b5b-a2f4-e45fa93d85e2="SA password protect entry checker">
+    <div class="dvframe">
+        <div class="dvlogOn">
+            <form action="index.html" class="form-horizontal" method="post" novalidate="novalidate">
+                <div class="control-group" style="text-align: center">
+                    <h3>天成易购后台管理系统</h3>
+                </div>
+                <div class="control-group">
+                    <!-- Text input-->
+                    <label class="control-label" for="input01">用户名</label>
+                    <div class="controls">
+                        <input autocomplete="off" class="input-xlarge input-username input-validation-error" data-val="true" data-val-required="请填写用户名" id="UserName" name="UserName" placeholder="用户名" type="text" value="">
+                        <p class="help-block help-username">
+                            <span class="field-validation-error" data-valmsg-for="UserName" data-valmsg-replace="true"><span for="UserName" generated="true" class="">请填写用户名</span></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <!-- Text input-->
+                    <label class="control-label" for="input01">密码</label>
+                    <div class="controls">
+                        <input autocomplete="off" class="input-xlarge input-password input-validation-error" data-val="true" data-val-required="请填写密码" id="UsserPassword" name="UsserPassword" placeholder="密码" type="password">
+                        <p class="help-block help-password">
+                            <span class="field-validation-error" data-valmsg-for="UsserPassword" data-valmsg-replace="true"><span for="UsserPassword" generated="true" class="">请填写密码</span></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <!-- Text input-->
+                    <label class="control-label" for="input01">验证码</label>
+                    <div class="controls">
+                        <input type="button" id="code" onclick="createCode()" class="imagecode" title="如果看不清楚，可以点击更换" alt="验证码" />
+                        <input autocomplete="off" class="input-xlarge input-imagecode input-validation-error" data-val="true" data-val-required="请填写验证码" id="input" maxlength="4" name="ImageCode" placeholder="验证码" type="text" value="">
+                        <p class="help-block help-imagecode">
+                            <span class="field-validation-error" data-valmsg-for="ImageCode" data-valmsg-replace="true"><span for="ImageCode" generated="true" class="">请填写验证码</span></span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label"></label>
+                    <!-- Button -->
+                    <div class="controls">
+                        <input  class="btn btn-primary btn-logon" type="button" value="登录" onclick="login()" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Content/js/bootstrap/bootstrap.js"></script>
+    <script src="~/Content/js/plugs/JqueryMD5_DinJonYa.js"></script>
+    <script src="~/Content/js/jquery-ui-1.8.11.min.js"></script>
+    <script src="~/Content/js/plugs/jquery.configuration.js"></script>
+
+    <script>
+        function login() {
+            var oValue = $("#input").val().toUpperCase();
+            console.log(oValue);
+            if (oValue == 0) {
+                layer.msg('请输入验证码', {
+ offset: ['400px', '550px'],
+                    time: 20000//20s后自动关闭
+                }); 
+            }
+            else if (oValue != code) {
+                layer.msg('验证码不正确，请重新输入', {
+ offset: ['400px', '550px'],
+                    time: 20000//20s后自动关闭
+                }); 
+                oValue = ' ';
+                createCode();
+            }
+            else {
+                var index = 0;
+                $.ajax({
+                    url: "http://139.159.183.14:8888/TianchengTesco/LoginByAdmin?Name=" + $("[name=UserName]").val() + "&Pwd=" + $("[name=UsserPassword]").val(),
+                    type: "post",
+                    success: function (d) {
+                        console.log(d);
+                        var arr = d.split('#');
+                        if (arr[0] > 0) {
+
+                                    $.cookie('UId', '' + arr[0] + '', {
+                                        path: '/'
+                                    })
+                                    $.cookie('UName', '' + $("[name=UserName]").val() + '', {
+                                        path: '/'
+                                    })
+                                    $.cookie('SId', '' + arr[1] + '', {
+                                        path: '/'
+                                    })
+                                    location.href = '/Users/IndexAdmin';
+                            
+                        }
+                    }
+                })
+            }
+        }
+    </script>
+
+</body>

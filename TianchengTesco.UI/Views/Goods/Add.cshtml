@@ -1,0 +1,188 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/jquery.form.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            if ($.cookie('UId') == null) {
+                this.location.href = '/Users/Login';
+            }
+        })
+    </script>
+</head>
+<body>
+    <div>
+        <h2>新增商品</h2>
+        <form id="form0">
+            <p>
+                商品名称:<input type="text" name="Name" />
+            </p>
+            <p>
+                单价:<input type="text" name="Price" />
+            </p>
+            <p>
+                数量:<input type="text" name="Num" />
+            </p>
+            <p>
+                类型:<select name="TId">
+                    <option value="0">--请选择--</option>
+                </select>
+            </p>
+            <p>
+                图片:<input type="hidden" name="Img" />
+                <img src="" id="showImg" width="100" height="100" />
+                <input type="file" name="file" />
+                <input type="button" value="上传" onclick="loadImg()" />
+            </p>
+            <p>
+                店铺:<select name="SId">
+                    <option value="0">--请选择--</option>
+                </select>
+            </p>
+            <p>
+                是否上架:<input type="radio" name="IsUse" value="1" checked />是
+                <input type="radio" name="IsUse" value="0" />否
+            </p>
+            <p>
+                <input type="button" value="提交" onclick="add()" />
+            </p>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        showTId();
+        showStores();
+    })
+    //加载类型
+    function showTId() {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/GetGoodsTypes",
+            type: "get",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                for (var i = 0; i < d.length; i++) {
+                    var op = '<option value="' + d[i].Id + '">' + d[i].Name +'</option>';
+                    $("[name=TId]").append(op);
+                }
+            }
+        })
+    }
+    //加载店铺
+    function showStores() {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/GetStores",
+            type: "get",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                for (var i = 0; i < d.length; i++) {
+                    var op = '<option value="' + d[i].Id + '">' + d[i].StoresName + '</option>'
+                    $("[name=SId]").append(op);
+                }
+            }
+        })
+    }
+    //上传图片
+    function loadImg() {
+        var formData = new FormData($("#form0")[0]);
+        var index = 0;
+        $.ajax({
+            url: "Load",
+            contentType: false,
+            processData: false,
+            cache: false,
+            type: "post",
+            data: formData,
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                var arr = d.split('#');
+                if (arr.length > 1) {
+                    alert(arr[0]);
+                    $("#showImg").prop("src", arr[1]);
+                    $("[name=Img]").val(arr[1]);
+                }
+                else {
+                    alert(d);
+                }
+            }
+        })
+    }
+    //新增
+    function add() {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/AddGoods",
+            type: "post",
+            data: $("#form0").serialize(),
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                if (d > 0) {
+                    layer.msg('提交成功', {
+                        time: 20000, //20s后自动关闭
+                        btn: ['知道了'],
+                        end: function () {
+                            var url = '/Goods/Index';
+                            window.open(url, "main");
+                        }
+                    });    
+                }
+                else {
+                    layer.msg('提交失败', {
+                        time: 20000//20s后自动关闭
+                    });  
+                }
+            }
+        })
+    }
+</script>

@@ -1,0 +1,61 @@
+
+异常时间：2018-10-09 20:40:58,238 [36] 
+异常级别：ERROR 
+异常位置：[36] (F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\LogHelper.cs:50) 
+消息描述：错误:
+异常：System.ArgumentNullException: 值不能为 null。
+参数名: entity
+   在 System.Data.Entity.Utilities.Check.NotNull[T](T value, String parameterName)
+   在 System.Data.Entity.DbContext.Entry[TEntity](TEntity entity)
+   在 TianchengTesco.DAL.UserInfosDAL.Add(UserInfos t) 位置 F:\小二\天成易购\TianchengTesco\TianchengTesco.DAL\UserInfosDAL.cs:行号 32
+
+
+ 
+异常时间：2018-10-09 21:07:25,333 [54] 
+异常级别：ERROR 
+异常位置：[54] (F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\LogHelper.cs:50) 
+消息描述：错误:
+异常：System.ArgumentNullException: 值不能为 null。
+参数名: entity
+   在 System.Data.Entity.Utilities.Check.NotNull[T](T value, String parameterName)
+   在 System.Data.Entity.DbContext.Entry[TEntity](TEntity entity)
+   在 TianchengTesco.DAL.UserInfosDAL.Add(UserInfos t) 位置 F:\小二\TianchengTesco\TianchengTesco.DAL\UserInfosDAL.cs:行号 32
+
+
+ 
+异常时间：2018-10-09 21:08:18,579 [54] 
+异常级别：ERROR 
+异常位置：[54] (F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\LogHelper.cs:50) 
+消息描述：错误:
+异常：System.ArgumentNullException: 值不能为 null。
+参数名: entity
+   在 System.Data.Entity.Utilities.Check.NotNull[T](T value, String parameterName)
+   在 System.Data.Entity.DbContext.Entry[TEntity](TEntity entity)
+   在 TianchengTesco.DAL.UserInfosDAL.Add(UserInfos t) 位置 F:\小二\TianchengTesco\TianchengTesco.DAL\UserInfosDAL.cs:行号 32
+
+
+ 
+异常时间：2018-10-09 21:18:26,602 [38] 
+异常级别：ERROR 
+异常位置：[38] (F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\LogHelper.cs:50) 
+消息描述：错误:
+异常：System.ArgumentNullException: 值不能为 null。
+参数名: entity
+   在 System.Data.Entity.Utilities.Check.NotNull[T](T value, String parameterName)
+   在 System.Data.Entity.DbContext.Entry[TEntity](TEntity entity)
+   在 TianchengTesco.DAL.UserInfosDAL.Add(UserInfos t) 位置 F:\小二\TianchengTesco\TianchengTesco.DAL\UserInfosDAL.cs:行号 32
+
+
+ 
+异常时间：2018-10-09 21:20:31,870 [38] 
+异常级别：ERROR 
+异常位置：[38] (F:\小二\天成易购\TianchengTesco\TianchengTesco.Common\LogHelper.cs:50) 
+消息描述：错误:
+异常：System.ArgumentNullException: 值不能为 null。
+参数名: entity
+   在 System.Data.Entity.Utilities.Check.NotNull[T](T value, String parameterName)
+   在 System.Data.Entity.DbContext.Entry[TEntity](TEntity entity)
+   在 TianchengTesco.DAL.UserInfosDAL.Add(UserInfos t) 位置 F:\小二\TianchengTesco\TianchengTesco.DAL\UserInfosDAL.cs:行号 32
+
+
+ 

@@ -1,0 +1,158 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>IndexBoss</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/js/page.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+
+    <style>
+        li {
+            width: 100px;
+            height: 80px;
+            float: left;
+            border: 1px solid;
+            list-style-type: none;
+            overflow: hidden;
+        }
+
+        ul {
+            width: 850px;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        <input type="button" value="批量发货" onclick="ps()" />&nbsp;
+    </p>
+    <div>
+        <ul>
+            <li><input type="checkbox" id="qx" /></li>
+            <li>商品图片</li>
+            <li>商品名称</li>
+            <li>商品数量</li>
+            <li>商品总价</li>
+            <li>订单时间</li>
+            <li>订单状态</li>
+            <li>操作</li>
+        </ul>
+        <ul id="list"></ul>
+    </div>
+    <br />
+    <div style="clear:both;margin:0 auto;width:400px;">
+        <input type="button" value="首页" onclick="FirstPage()" />&nbsp;
+        <input type="button" value="上一页" onclick="PrivePage()" />&nbsp;
+        <input type="button" value="下一页" onclick="NextPage()" />&nbsp;
+        <input type="button" value="尾页" onclick="LastPage()" />&nbsp;
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        if ($.cookie('UId') == null) {
+            this.location.href = '/Users/Login';
+        }
+        show();
+    })
+    //显示店铺订单
+    function show() {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/QueryOrders?pageIndex=" + pageIndex + "&UId=0&SId=" + $.cookie('SId')  ,
+            type: "post",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                $("#list").html("");
+                pageIndex = d.PageIndex;
+                pageCount = d.PageCount;
+                for (var i = 0; i < d.Data.length; i++) {
+                    var state = "";
+                    switch (d.Data[i].State) {
+                        case 0: state = "未付款"; break;
+                        case 1: state = "已付款"; break;
+                        case 2: state = "已确认订单"; break;
+                        case 3: state = "未收货/已发货"; break;
+                        case 4: state = "已收货/未评论"; break;
+                        case 5: state = "已评论"; break;
+                    }
+                    var li ='<li><input type="checkbox" name="ck" value="' + d.Data[i].Id + '" /></li>'
+                        + '<li><a href="javascript:void(0)" onclick="tiao(' + d.Data[i].Id + ')" ><img src="' + d.Data[i].Img + '" width="100" height="80" /></a></li>'
+                        + '<li><a href="javascript:void(0)" onclick="tiao(' + d.Data[i].Id + ')" >' + d.Data[i].GName + '</a></li>'
+                        + '<li>' + d.Data[i].Nums + '</li>'
+                        + '<li>' + (d.Data[i].Nums * d.Data[i].Price) + '元</li>'
+                        + '<li>' + d.Data[i].CreateDate + '</li>'
+                        + '<li>' + state + '</li>'
+                        + '<li><a href="javascript:void(0)" onclick="del(' + d.Data[i].Id + ',' + d.Data[i].State + ')" >发货</a></li>'
+                    $("#list").append(li);
+                }
+            }
+        })
+    }
+    //审批
+    function del(id, state) {
+        if (state == 0 || state == 1) {
+            layer.msg('该订单未确认', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        if (state == 3 || state == 4 || state == 5) {
+            layer.msg('该订单已发货', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        var index = 0;
+       $.ajax({
+           url: "http://139.159.183.14:8888/TianchengTesco/UpdateOrders?Ids=" + id+"&State=3",
+           type: "post",
+           beforeSend: function () {
+               //loading层 var index = 0;
+               index = layer.load(1, {
+                   shade: [0.1, '#fff'] //0.1透明度的白色背景
+               });
+           },
+           complete: function () {
+               layer.close(index);
+           },
+            success: function (d) {
+                console.log(d);
+                if (d > 0) {
+                    layer.msg('发货成功', {
+                        time: 20000, //20s后自动关闭
+                        btn: ['知道了'],
+                        end: function () {
+                            show();
+                        }
+                    }); 
+                }
+                else {
+                    layer.msg('发货失败', {
+                        time: 20000 //20s后自动关闭
+                    }); 
+                }
+            }
+        })
+    }
+    function tiao(id) {
+        window.open('/Orders/Item?Id=' + id, 'main');
+    }
+</script>

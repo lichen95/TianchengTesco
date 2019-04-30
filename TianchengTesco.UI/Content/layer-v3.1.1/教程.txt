@@ -1,0 +1,22 @@
+ layer.open({
+            type: 1,//模态窗种类
+            skin: "layui-layer-rim",
+            title: "编辑信息",
+            area: ["400px", "500px"],
+            maxmin: true,
+            //拼接字符串自定义名称
+            content: '<div><input type="text" name="Name"><input type="button" value="提交" onclick="add()" /></div>'
+        });
+
+
+ layer.open({
+            type: 2,//模态窗种类
+            skin: "layui-layer-rim",
+            title: "编辑信息",
+            area: ["400px", "500px"],
+            maxmin: true,
+            //拼接字符串自定义名称
+            content: '/Student/Add'
+        });
+
+ window.parent.location.reload();//关闭当前页 

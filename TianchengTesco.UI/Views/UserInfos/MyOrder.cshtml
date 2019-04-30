@@ -1,0 +1,216 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MyOrder</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/js/page.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+    <link href="~/Content/css/css.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            if ($.cookie('UserId') == null) {
+                parent.location.href = '/UserInfos/Index';
+            }
+        })
+    </script>
+    <style>
+        li {
+            width: 100px;
+            height: 80px;
+            float: left;
+            border: 1px solid;
+            list-style-type: none;
+            overflow: hidden;
+        }
+
+        ul {
+            width: 750px;
+        }
+    </style>
+    <style>
+        /*positions*/
+        .positions {
+            height: 55px;
+            line-height: 55px;
+            padding-left: 25px;
+            background: #fff url(../images/images/home2.png) 5px center no-repeat;
+        }
+
+            .positions a {
+                color: #333;
+            }
+
+                .positions a:hover, .positions .posCur {
+                    color: #F00;
+                }
+    </style>
+</head>
+<body>
+    <div class="positions" style="background:#F8F8F8">
+        <img src="~/Content/images/images/home2.png" />当前位置：<a href="javascript:void(0)" onclick="window.open('/UserInfos/Main', 'main')">首页</a>  &gt; <a href="#" class="posCur">我的订单</a>
+    </div><!--positions/-->
+    <div style="margin-left:15px">
+        <ul>
+            <li>商品图片</li>
+            <li>商品名称</li>
+            <li>商品数量</li>
+            <li>商品总价</li>
+            <li>订单时间</li>
+            <li>订单状态</li>
+            <li>操作</li>
+        </ul>
+        <ul id="list"></ul>
+    </div>
+    <br />
+    <div style="clear:both;margin:0 auto;width:400px;">
+        <input type="button" value="首页" onclick="FirstPage()" />&nbsp;
+        <input type="button" value="上一页" onclick="PrivePage()" />&nbsp;
+        <input type="button" value="下一页" onclick="NextPage()" />&nbsp;
+        <input type="button" value="尾页" onclick="LastPage()" />&nbsp;
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        show();
+    })
+    //显示我的订单
+    function show() {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/QueryOrders?pageIndex=" + pageIndex + "&UId=" + $.cookie('UserId') + "&SId=0",
+            type: "post",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                $("#list").html("");
+                pageIndex = d.PageIndex;
+                pageCount = d.PageCount;
+                for (var i = 0; i < d.Data.length; i++) {
+                    var state = "";
+                    switch (d.Data[i].State) {
+                        case 0: state = "未付款"; break;
+                        case 1: state = "已付款"; break;
+                        case 2: state = "已确认订单"; break;
+                        case 3: state = "已发货"; break;
+                        case 4: state = "已收货"; break;
+                        case 5: state = "已评论"; break;
+                    }
+                    var li = '<li><a href="javascript:void(0)" onclick="tiao1(' + d.Data[i].GId + ')" ><img src="' + d.Data[i].Img + '" width="100" height="80" /></a></li>'
+                        + '<li>' + d.Data[i].GName + '</li>'
+                        + '<li>' + d.Data[i].Nums + '</li>'
+                        + '<li>' + (d.Data[i].Nums * d.Data[i].Price) + '元</li>'
+                        + '<li>' + d.Data[i].CreateDate + '</li>'
+                        + '<li><a href="javascript:void(0)" onclick="pay(' + d.Data[i].Id + ',' + d.Data[i].State + ')" >' + state + '</a></li>'
+                        + '<li><a href="javascript:void(0)" onclick="collect(' + d.Data[i].Id + ',' + d.Data[i].State + ')" >确认收货</a>&nbsp;<a href="javascript:void(0)" onclick="think(' + d.Data[i].Id + ',' + d.Data[i].State + ')" >评论</a><a href="javascript:void(0)" onclick="tiao(' + d.Data[i].Id + ')" >查看</a></li>'
+                    $("#list").append(li);
+                }
+            }
+        })
+    }
+    //收货
+    function collect(id, state) {
+        if (state == 4 || state == 5) {
+            layer.msg('该商品已确认收货', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        if (state == 0 || state == 1 || state == 2) {
+            layer.msg('该商品未发货', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/UpdateOrders?Ids=" + id+"&State=4",
+            type: "post",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                if (d > 0) {
+                    layer.msg('收货成功', {
+                        time: 20000//20s后自动关闭
+                    }); 
+                    show();
+                }
+                else {
+                    layer.msg('收货失败', {
+                        time: 20000//20s后自动关闭
+                    }); 
+                }
+        }
+    })
+    }
+    //评论
+    function think(id, state) {
+        if (state == 5) {
+            layer.msg('该商品已评论', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        if (state == 0 || state == 1 || state == 2 || state == 3) {
+            layer.msg('该商品未收货', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        layer.open({
+            type: 2,//模态窗种类
+            skin: "layui-layer-rim",
+            title: "评论",
+            area: ["400px", "500px"],
+            maxmin: true,
+            //拼接字符串自定义名称
+            content: '/Comments/Add?Id=' + id
+        });
+    }
+    //付款
+    function pay(id, state) {
+        if (state != 0) {
+            return;
+        }
+        window.open('/UserInfos/Pay?Ids=' + id, 'main');
+    }
+    function tiao1(id) {
+        window.open('/UserInfos/Item?GId=' + id, 'main');
+    }
+    function tiao(id) {
+ 	layer.open({
+            type: 2,//模态窗种类
+            skin: "layui-layer-rim",
+            title: "订单详情",
+            area: ["400px", "500px"],
+            maxmin: true,
+            //拼接字符串自定义名称
+            content: '/Orders/Item?Id=' + id
+        });
+    }
+</script>

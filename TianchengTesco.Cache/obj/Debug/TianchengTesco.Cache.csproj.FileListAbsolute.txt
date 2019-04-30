@@ -1,0 +1,15 @@
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Cache\bin\Debug\TianchengTesco.Cache.dll
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Cache\bin\Debug\TianchengTesco.Cache.pdb
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Cache\bin\Debug\Newtonsoft.Json.dll
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Cache\obj\Debug\TianchengTesco.Cache.csproj.CoreCompileInputs.cache
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Cache\obj\Debug\TianchengTesco.Cache.csproj.CopyComplete
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Cache\obj\Debug\TianchengTesco.Cache.dll
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Cache\obj\Debug\TianchengTesco.Cache.pdb
+F:\小二\TianchengTesco\TianchengTesco.Cache\bin\Debug\TianchengTesco.Cache.dll
+F:\小二\TianchengTesco\TianchengTesco.Cache\bin\Debug\TianchengTesco.Cache.pdb
+F:\小二\TianchengTesco\TianchengTesco.Cache\bin\Debug\Newtonsoft.Json.dll
+F:\小二\TianchengTesco\TianchengTesco.Cache\obj\Debug\TianchengTesco.Cache.csprojAssemblyReference.cache
+F:\小二\TianchengTesco\TianchengTesco.Cache\obj\Debug\TianchengTesco.Cache.csproj.CoreCompileInputs.cache
+F:\小二\TianchengTesco\TianchengTesco.Cache\obj\Debug\TianchengTesco.Cache.csproj.CopyComplete
+F:\小二\TianchengTesco\TianchengTesco.Cache\obj\Debug\TianchengTesco.Cache.dll
+F:\小二\TianchengTesco\TianchengTesco.Cache\obj\Debug\TianchengTesco.Cache.pdb

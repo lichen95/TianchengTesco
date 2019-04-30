@@ -1,0 +1,5 @@
+F:\小一\demo\CaChe\LC.Cache\bin\Debug\LC.Cache.dll
+F:\小一\demo\CaChe\LC.Cache\bin\Debug\LC.Cache.pdb
+F:\小一\demo\CaChe\LC.Cache\bin\Debug\Newtonsoft.Json.dll
+F:\小一\demo\CaChe\LC.Cache\obj\Debug\LC.Cache.dll
+F:\小一\demo\CaChe\LC.Cache\obj\Debug\LC.Cache.pdb

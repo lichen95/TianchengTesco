@@ -1,0 +1,128 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="icon" href="~/Content/images/bitbug_favicon.ico" mce_href="~/Content/images/bitbug_favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="~/Content/images/bitbug_favicon.ico" mce_href="~/Content/images/bitbug_favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width" />
+    <title>天成易购_会员登录</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/yzmJS.js"></script>
+    <link href="~/Content/css/yzmStyle.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/css/css.css" rel="stylesheet" />
+    <script src="~/Content/js/js.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+</head>
+<body style=" background:#FFF;">
+        <div class="loginLogo">
+            <div class="logoMid">
+                <h2 class="logo" style="height:71px;padding-top:10px;">
+                    <a href="/UserInfos/Index"><img src="~/Content/images/0ee971fa5c5384fbc137e2f838a35dfa.png" width="241" height="71" /></a></h2>
+                <div class="loginReg">
+                    还没有会员账号?&nbsp;<a href="/UserInfos/Add">免费注册</a>
+                </div><!--loginReg/-->
+            </div><!--logoMid/-->
+        </div><!--loginLogo/-->
+        <div class="loginBox">
+            <div class="loginLeft">
+
+                <img src="~/Content/images/images/logoinimg.jpg" width="716" height="376" />
+            </div><!--loginLeft/-->
+            <form  class="loginRight">
+                <h2>会员登录</h2>
+                <h3>用户名</h3>
+                <input type="text" class="name" name="Name" />
+                <h3>密码</h3>
+                <input type="password" class="pwd" name="Pwd" />
+                <h3>验证码</h3>
+                <input type="text" id="input" class="yzm" value="" />
+                <input type="button" id="code" class="yzm" onclick="createCode()" />
+                <div class="subs">
+                    <img type="image" src="~/Content/images/images/sub.jpg" class="submit" onclick="login()" />
+                </div>
+            </form><!--loginRight/-->
+            <div class="clears"></div>
+        </div><!--loginBox/-->
+    </body>
+</html>
+
+<script>
+$(function(){
+//jinzhiyoujian
+document.oncontextmenu = function(){
+    event.returnValue = false;
+}
+})
+    function login() {
+        if ($("[name=Name]").val() == "") {
+            layer.msg('用户名不能为空', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        if ($("[name=Pwd]").val() == "") {
+            layer.msg('密码不能为空', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        var oValue = $("#input").val().toUpperCase();
+        console.log(oValue);
+        if (oValue == 0) {
+            layer.msg('请输入验证码', {
+                time: 20000//20s后自动关闭
+            }); 
+        }
+        else if (oValue != code) {
+            layer.msg('验证码不正确，请重新输入', {
+                time: 20000//20s后自动关闭
+            }); 
+            oValue = ' ';
+            createCode();
+        }
+        else {
+            var index = 0;
+            $.ajax({
+                url: "http://139.159.183.14:8888/TianchengTesco/LoginByUserInfos?Name=" + $("[name=Name]").val() + "&Pwd=" + $("[name=Pwd]").val(),
+                type: "post",
+                beforeSend: function () {
+                    //loading层 var index = 0;
+                    index = layer.load(1, {
+                        shade: [0.1, '#fff'] //0.1透明度的白色背景
+                    });
+                },
+                complete: function () {
+                    layer.close(index);
+                },
+                success: function (d) {
+                    console.log(d);
+                    if (d > 0) {
+
+                                $.cookie('UserId', '' + d + '', {
+                                    path: '/'
+                                })
+                                $.cookie('UserName', '' + $("[name=Name]").val() + '', {
+                                    path: '/'
+                                })
+                                window.parent.location.reload();//关闭当前页
+                                location.href = '/UserInfos/Index';
+
+                    }
+                    else {
+                        layer.msg('用户名或密码不正确', {
+                            time: 20000//20s后自动关闭
+                        }); 
+                    }
+                }
+            })
+        }
+    }
+</script>

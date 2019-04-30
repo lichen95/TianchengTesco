@@ -1,0 +1,118 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            if ($.cookie('UId') == null) {
+                this.location.href = '/Users/Login';
+            }
+        })
+    </script>
+</head>
+<body>
+    <div>
+        <h2>新增角色</h2>
+        <form id="form0">
+            <p>
+                角色名称:<input type="text" name="Name" />
+            </p>
+            <p>
+                选择权限:<span id="showPermissions">
+
+                </span>
+            </p>
+            <p>
+                是否启用:<input type="radio" name="IsUse" value="1" checked />是
+                <input type="radio" name="IsUse" value="0" />否
+            </p>
+            <p>
+                <input type="button" value="提交" onclick="add()" />
+            </p>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        showPermissions();
+    })
+    //加载权限
+    function showPermissions() {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/GetPermissions",
+            type: "get",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                for (var i = 0; i < d.length; i++) {
+                    var ck = '<input type="checkbox" name="PermissionsIds" value="' + d[i].Id + '" aa="' + d[i].Name + '" />' + d[i].Name + ''
+                    $("#showPermissions").append(ck);
+                }
+            }
+        })
+    }
+    //新增
+    function add() {
+        var pids = [];
+        $("[name=PermissionsIds]:checked").each(function () {
+            pids.push($(this).val());
+        })
+        var pnames = [];
+        $("[name=PermissionsIds]:checked").each(function () {
+            pnames.push($(this).attr("aa"));
+        })
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/AddRoles?Name="+ $("[name=Name]").val()+"&PermissionsIds="+pids+ "&PermissionsNames="+ pnames+ "&IsUse="+ $("[name=IsUse]:checked").val(),
+            type: "post",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                if (d > 0) {
+                    layer.msg('提交成功', {
+                        time: 20000, //20s后自动关闭
+                        btn: ['知道了'],
+                        end: function () {
+                            window.open('/Roles/Index', "main");
+                        }
+                    }); 
+                    
+                }
+                else {
+                    layer.msg('提交失败', {
+                        time: 20000//20s后自动关闭
+                    }); 
+                }
+            }
+        })
+    }
+</script>

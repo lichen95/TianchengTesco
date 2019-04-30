@@ -1,0 +1,10 @@
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Entity\bin\Debug\TianchengTesco.Entity.dll
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Entity\bin\Debug\TianchengTesco.Entity.pdb
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Entity\obj\Debug\TianchengTesco.Entity.csproj.CoreCompileInputs.cache
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Entity\obj\Debug\TianchengTesco.Entity.dll
+F:\小二\天成易购\TianchengTesco\TianchengTesco.Entity\obj\Debug\TianchengTesco.Entity.pdb
+F:\小二\TianchengTesco\TianchengTesco.Entity\bin\Debug\TianchengTesco.Entity.dll
+F:\小二\TianchengTesco\TianchengTesco.Entity\bin\Debug\TianchengTesco.Entity.pdb
+F:\小二\TianchengTesco\TianchengTesco.Entity\obj\Debug\TianchengTesco.Entity.csproj.CoreCompileInputs.cache
+F:\小二\TianchengTesco\TianchengTesco.Entity\obj\Debug\TianchengTesco.Entity.dll
+F:\小二\TianchengTesco\TianchengTesco.Entity\obj\Debug\TianchengTesco.Entity.pdb

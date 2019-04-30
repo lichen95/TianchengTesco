@@ -1,0 +1,108 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Update</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            if ($.cookie('UId') == null) {
+                this.location.href = '/Users/Login';
+            }
+        })
+    </script>
+</head>
+<body>
+    <div>
+        <h2>修改权限</h2>
+        <form id="form0">
+            <p>
+                <input type="hidden" name="Id" />
+                权限名称:<input type="text" name="Name" />
+            </p>
+            <p>
+                页面URL:<input type="text" name="Url" />
+            </p>
+            <p>
+                是否启用:<input type="radio" name="IsUse" value="1" checked />是
+                <input type="radio" name="IsUse" value="0" />否
+            </p>
+            <p>
+                <input type="button" value="提交" onclick="add()" />
+            </p>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        show();
+    })
+    function show() {
+        var index = 0;
+        $.ajax({
+            url: "http://127.0.0.1:8888/TianchengTesco/QueryByIdPermissions?Id="+@Request.QueryString["Id"],
+            type: "get",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                $("[name=Id]").val(d.Id);
+                $("[name=Name]").val(d.Name);
+                $("[name=Url]").val(d.Url);
+                $("[value=" + d.IsUse+"]").prop("checked","checked");
+            }
+        })
+    }
+    function add() {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/UpdatePermissions",
+            type: "post",
+            data: $("#form0").serialize(),
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                if (d > 0) {
+                    layer.msg('删除成功', {
+                        time: 20000, //20s后自动关闭
+                        btn: ['知道了'],
+                        end: function () {
+                            window.open('/Permissions/Index', "main");
+                        }
+                    }); 
+                    
+                }
+                else {
+                    layer.msg('提交失败', {
+                        time: 20000//20s后自动关闭
+                    }); 
+                }
+            }
+        })
+    }
+</script>

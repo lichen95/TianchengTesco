@@ -1,0 +1,72 @@
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/css/demo.css" rel="stylesheet" />
+    <link href="~/Content/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript">
+        //setting配置
+        var setting = {};
+        //节点的数据集合
+        var zNodes = [
+            //父级节点1
+            {name:"手机",open:true,//open打开该节点 - 号状态
+                children: [
+                    {name:"苹果",
+                        children: [
+                            {name: "苹果7", 
+                                children: [
+                                    {name:"苹果7P"}
+                                ]},
+                            { name: "苹果8" },
+                            { name: "苹果9" }
+                        ]},
+                        {name: "小米",
+                         children: [
+                            {name: "小米7",
+                                children: [
+                                    { name: "小米7P" }
+                                ]},
+                            { name: "小米8" },
+                            { name: "小米9" }
+                        ]}
+                ]},
+            //父级节点2
+            {
+                name: "电脑", isParent: true,//isParent该节点收起来 +号状态
+                children: [
+                {name: "联想",
+                    children: [
+                        {name: "联想7",
+                            children: [
+                                { name: "联想7P" }
+                            ]},
+                        { name: "联想8" },
+                        { name: "联想9" }
+                    ]}
+            ]},
+            //父级节点3
+            {name:"电器",isParent:true}
+        ];
+        $(function () {
+            $.fn.zTree.init($("#tree"), setting, zNodes);
+        })
+    </script>
+</head>
+<body>
+    <div class="zTreeDemoBackground left"> 
+        <ul id="tree" class="ztree">
+           
+        </ul>
+    </div>
+</body>
+</html>

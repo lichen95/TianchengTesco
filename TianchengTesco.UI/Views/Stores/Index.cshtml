@@ -1,0 +1,155 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/page.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            if ($.cookie('UId') == null) {
+                this.location.href = '/Users/Login';
+            }
+        })
+    </script>
+    <style>
+        li {
+            width: 100px;
+            height: 30px;
+            border: 1px solid;
+            float: left;
+            list-style-type: none;
+        }
+
+        ul {
+            width: 850px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>店铺管理</h2>
+        <p>
+            <input type="text" name="StoresName" placeholder="店铺名称" />&nbsp;
+            <input type="button" value="查询" onclick="search()" />&nbsp;
+            <input type="button" value="新增" onclick="add('/Stores/Add')" />&nbsp;
+            <input type="button" value="批量删除" onclick="ps()" />&nbsp;
+        </p>
+        <ul>
+            <li><input type="checkbox" id="qx" /></li>
+            <li>序号</li>
+            <li>店铺名称</li>
+            <li>店主姓名</li>
+            <li>地址</li>
+            <li>主营物品</li>
+            <li>店主手机号</li>
+            <li>操作</li>
+        </ul>
+        <ul id="list"></ul>
+    </div>
+    <div style="clear:both">
+        <input type="button" value="首页" onclick="FirstPage()" />&nbsp;
+        <input type="button" value="上一页" onclick="PrivePage()" />&nbsp;
+        <input type="button" value="下一页" onclick="NextPage()" />&nbsp;
+        <input type="button" value="尾页" onclick="LastPage()" />&nbsp;
+    </div>
+</body>
+</html>
+<script>
+    show();
+    //显示
+    function show()
+    {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/QueryStores?pageIndex=" + pageIndex + "&StoresName=" + $("[name=StoresName]").val(),
+            type: "post",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                $("#list").html("");
+                pageIndex = d.PageIndex;
+                pageCount = d.PageCount;
+                for (var i = 0; i < d.Data.length; i++) {
+                    var li = '<li><input type="checkbox" name="ck" value="' + d.Data[i].Id + '" /></li>'
+                        + '<li>' + (i+1) + '</li>'
+                        + '<li>' + d.Data[i].StoresName + '</li>'
+                        + '<li>' + d.Data[i].Name + '</li>'
+                        + '<li>' + d.Data[i].Address + '</li>'
+                        + '<li>' + d.Data[i].Types + '</li>'
+                        + '<li>' + d.Data[i].Phone + '</li>'
+                        + '<li><a href="javascript:void(0)" onclick="upd(' + d.Data[i].Id + ')">更新</a>&nbsp;<a href="javascript:void(0)" onclick="del(' + d.Data[i].Id + ')">删除</a></li>'
+                    $("#list").append(li);
+                }
+            }
+        })
+    }
+    //更新
+    function upd(id) {
+        var url = '/Stores/Update?Id=' + id;
+        window.open(url, "main");
+    }
+    //删除
+    function del(id) {
+        //询问框
+        layer.confirm('确认删除吗？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            var index = 0;
+            $.ajax({
+                url: "http://139.159.183.14:8888/TianchengTesco/DeleteStores?Ids="+id,
+                type: "post",
+                beforeSend: function () {
+                    //loading层 var index = 0;
+                    index = layer.load(1, {
+                        shade: [0.1, '#fff'] //0.1透明度的白色背景
+                    });
+                },
+                complete: function () {
+                    layer.close(index);
+                },
+                success: function (d) {
+                    console.log(d);
+                    if (d > 0) {
+                        layer.msg('删除成功', {
+                            time: 20000, //20s后自动关闭
+                            btn: ['知道了'],
+                            end: function () {
+                                pageIndex = 1;
+                                show();
+                                $("#qx").prop("checked", "");
+                            }
+                        }); 
+                    }
+                    else {
+                        layer.msg('删除失败', {
+                            time: 20000//20s后自动关闭
+                        }); 
+                    }
+                }
+            })
+            }, function () {
+                layer.msg('再考虑一下', {
+                    time: 20000 //20s后自动关闭
+                });
+            });
+    }
+</script>
+

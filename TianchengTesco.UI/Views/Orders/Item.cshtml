@@ -1,0 +1,90 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Item</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            if ($.cookie('UserId') == null && $.cookie('UId') == null) {
+                location.href = '/UserInfos/Index';
+            }
+        })
+    </script>
+</head>
+<body>
+    <div> 
+        <h2>订单详情</h2>
+        <table id="tab" border="1" cellspacing="0" >
+            
+        </table>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        show();
+    })
+    function show() {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/GetOrdersById?Id="+@Request.QueryString["Id"],
+            type: "get",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                var state = "";
+                switch (d.State) {
+                    case 0: state = "未付款"; break;
+                    case 1: state = "已付款"; break;
+                    case 2: state = "已确认订单"; break;
+                    case 3: state = "未收货/已发货"; break;
+                    case 4: state = "已收货/未评论"; break;
+                    case 5: state = "已评论"; break;
+                }
+                var tr = '<tr>' 
+                        +'<td>商品名称</td>'
+                        +'<td>'+d.GName+'</td>'
+                        + '</tr>'
+                        +'<tr>'
+                        + '<td>商品总价</td>'
+                        + '<td>' + (d.Nums*d.Price) +'</td>'
+                        + '</tr>'
+                        + '<tr>'
+                        + '<td>买家信息</td>'
+                        + '<td>' + d.UName + '&nbsp;' + d.Phone + '&nbsp;' + d.Address +'</td>'
+                        + '</tr>'
+                        + '<tr>'
+                        + '<td>店铺名称</td>'
+                        + '<td>'+d.SName+'</td>'
+                        + '</tr>'
+                        + '<tr>'
+                        + '<td>订单时间</td>'
+                        + '<td>' + d.CreateDate+'</td>'
+                        + '</tr>'
+                        + '<tr>'
+                        + '<td>订单状态</td>'
+                        + '<td>' + state+'</td>'
+                        + '</tr>'
+                $("#tab").append(tr);
+            }
+        })
+    }
+</script>

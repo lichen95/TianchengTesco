@@ -1,0 +1,93 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Answer</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/mobile/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script>
+        $(function () {
+            if ($.cookie('UId') == null) {
+                this.location.href = '/Users/Login';
+            }
+        })
+    </script>
+</head>
+<body>
+    <div> 
+        <form id="form0">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="OId" value="" />
+            <input type="hidden" name="Remark" value="" />
+            <p id="Remark">
+
+            </p>
+            <p>
+                <textarea name="Answer"></textarea>
+            </p>
+            <p>
+                <input type="button" value="回复" onclick="add()" />
+            </p>
+        </form>
+        
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        show();
+    })
+    function show() {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/QueryByIdComments?Id="+@Request.QueryString["Id"],
+            type: "get",
+            success: function (d) {
+                console.log(d);
+                $("[name=Id]").val(d.Id);
+                $("[name=OId]").val(d.OId);
+                $("[name=Remark]").val(d.Remark);
+                $("#Remark").html("客户评论:"+d.Remark);
+            }
+        })
+    }
+    function add() {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/UpdateComments",
+            type: "post",
+            data: $("#form0").serialize(),
+            success: function (d) {
+                console.log(d);
+                if (d > 0) {
+                    layer.msg('提交成功', {
+                        time: 20000, //20s后自动关闭
+                        btn: ['知道了'],
+                        end: function () {
+                            //关闭当前页
+                            window.parent.location.reload();
+                        }
+                    });  
+                }
+                else {
+                    layer.msg('提交失败', {
+                        time: 20000, //20s后自动关闭
+                        btn: ['知道了'],
+                        end: function () {
+                            //关闭当前页
+                            window.parent.location.reload();
+                        }
+                    }); 
+                }
+            }
+        })
+    }
+</script>

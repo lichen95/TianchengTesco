@@ -1,0 +1,161 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="icon" href="~/Content/images/bitbug_favicon.ico" mce_href="~/Content/images/bitbug_favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="~/Content/images/bitbug_favicon.ico" mce_href="~/Content/images/bitbug_favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width" />
+    <title>天成易购_会员注册</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <link href="~/Content/css/css.css" rel="stylesheet" />
+    <script src="~/Content/js/js.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+</head>
+<body style=" background:#FFF;">
+    <div class="loginLogo">
+        <div class="logoMid">
+            <h1 class="logo" style="height:71px;padding-top:10px;"><a href="/UserInfos/Index"><img src="~/Content/images/0ee971fa5c5384fbc137e2f838a35dfa.png" width="241" height="71" /></a></h1>
+            <div class="loginReg">
+                还没有会员账号?&nbsp;<a href="/UserInfos/Login">登录</a>
+            </div><!--loginReg/-->
+        </div><!--logoMid/-->
+    </div><!--loginLogo/-->
+    <div class="loginBox">
+        <img src="~/Content/images/images/chengnuo.jpg" width="295" height="393" class="chengnuo" />
+        <form class="reg"  id="form0">
+            <div class="regList">
+                <label><span class="red">*</span> 账户名</label>
+                <input type="text" name="UName" /> <span style="color:#999;">请输入邮箱/用户名/手机号</span>
+            </div><!--regList/-->
+            <div class="regList">
+                <label><span class="red">*</span> 请设置密码</label>
+                <input type="password" name="Pwd" />
+            </div><!--regList/-->
+            <div class="regList">
+                <label><span class="red">*</span> 请确认密码</label>
+                <input type="text" name="Pwd0" />
+            </div><!--regList/-->
+            <div class="regList">
+                <label><span class="red">*</span> 姓名</label>
+                <input type="text" name="Name" />
+            </div><!--regList/-->
+            <div class="regList">
+                <label><span class="red">*</span> 手机号</label>
+                <input type="text" name="Phone" />
+            </div><!--regList/-->
+            <div class="regList">
+                <label><span class="red">*</span> 收货地址</label>
+                <input type="text" name="Address" />
+            </div><!--regList/-->
+
+
+            <div class="xieyi">
+                <input type="checkbox" /> 我已经阅读并同意<a href="#">《天成易购用户注册协议》</a>
+            </div><!--xieyi/-->
+            <div class="reg">
+                <img type="image" src="~/Content/images/images/reg.jpg" class="submit" onclick="add()" />
+            </div><!--reg/-->
+        </form><!--reg/-->
+        <div class="clears"></div>
+    </div><!--loginBox/-->
+</body>
+</html>
+<script>
+
+$(function(){
+//jinzhiyoujian
+document.oncontextmenu = function(){
+    event.returnValue = false;
+}
+})
+
+    function add() {
+        if ($("[name=UName]").val() == "") {
+            layer.msg('用户名不能为空', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        if ($("[name=Pwd]").val() == "") {
+            layer.msg('密码不能为空', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        if ($("[name=Pwd0]").val() == "") {
+            layer.msg('确认密码不能为空', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        if ($("[name=Pwd0]").val() != $("[name=Pwd]").val()) {
+            layer.msg('两次密码输入不一致', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        if ($("[name=Name]").val() == "") {
+            layer.msg('姓名不能为空', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        if ($("[name=Phone]").val() == "") {
+            layer.msg('手机号不能为空', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        if ($("[name=Address]").val() == "") {
+            layer.msg('地址不能为空', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        if (!$("input[type='checkbox']").prop('checked')) {
+            layer.msg('尚未同意协议', {
+                time: 20000//20s后自动关闭
+            }); 
+            return;
+        }
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/AddUserInfos",
+            type: "post",
+            data: $("#form0").serialize(),
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                if (d > 0) {
+                    layer.msg('注册成功', {
+                        time: 20000, //20s后自动关闭
+                        btn: ['知道了'],
+                        end: function () {
+                            location.href = '/UserInfos/Login';
+                        }
+                    });
+                   
+                }
+                else {
+                    layer.msg('注册失败', {
+                        time: 20000//20s后自动关闭
+                    }); 
+                }
+            }
+        })
+    }
+</script>

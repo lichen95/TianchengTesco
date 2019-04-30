@@ -1,0 +1,63 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/mobile/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        <form id="form0">
+            <input type="hidden" name="OId" value="@Request.QueryString["Id"]" />
+            <input type="hidden" name="Answer" value="" />
+            <p>
+                <textarea name="Remark"></textarea>
+            </p>
+            <p>
+                <input type="button" value="评论" onclick="add()" />
+            </p>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    function add() {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/AddComments",
+            type: "post",
+            data: $("#form0").serialize(),
+            success: function (d) {
+                console.log(d);
+                if (d > 0) {
+	            layer.msg('提交成功', {
+                            time: 20000, //20s后自动关闭
+                            btn: ['知道了'],
+                            end: function () {
+                                //关闭当前页
+                                window.parent.location.reload();
+                            }
+                        });  
+                }
+                else {
+                    layer.msg('提交失败', {
+                        time: 20000, //20s后自动关闭
+                        btn: ['知道了'],
+                        end: function () {
+                            //关闭当前页
+                            window.parent.location.reload();
+                        }
+                    });  
+                }
+            }
+        })
+    }
+</script>

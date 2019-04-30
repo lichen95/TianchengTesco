@@ -1,0 +1,134 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Pay</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <link type="text/css" href="~/Content/css/css.css" rel="stylesheet" />
+    <script type="text/javascript" src="~/Content/js/jquery.js"></script>
+    <script type="text/javascript" src="~/Content/js/js.js"></script>
+    <script src="~/Content/js/wb.js" type="text/javascript" charset="utf-8"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+       <script>
+        $(function () {
+            if ($.cookie('UserId') == null) {
+                parent.location.href = '/UserInfos/Index';
+            }
+        })
+    </script>
+</head>
+<body>
+    <div class="positions" style="background:#F8F8F8">
+        <img src="~/Content/images/images/home2.png" />
+        当前位置：<a href="javascript:void(0)" onclick="window.open('/UserInfos/Main', 'main')">首页</a>  &gt; <a href="#" class="posCur">结算</a>
+    </div><!--positions/-->
+    <div class="cont">
+
+        <h4 class="orderTitle">支付方式</h4>
+        <ul class="zhiList">
+            <li>网银支付-借记卡</li>
+            <li>网银支付-信用卡</li>
+            <li>财付通-余额支付</li>
+            <li>支付宝-余额支付</li>
+            <div class="clears"></div>
+        </ul><!--zhiList/-->
+        <div class="zhifufangshi">
+            <ul class="yinhang">
+                <li><input type="radio" /><img src="~/Content/images/images/yin1.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin2.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin3.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin4.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin5.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin6.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin7.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin8.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin9.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin1.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin2.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin3.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin4.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin5.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin6.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin7.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin8.gif" /></li>
+                <div class="clears"></div>
+            </ul>
+        </div><!--zhzhifufangshii/-->
+        <div class="zhifufangshi">
+            <ul class="yinhang">
+                <li><input type="radio" /><img src="~/Content/images/images/yin7.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin8.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin9.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin1.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin2.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin3.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin4.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin5.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin6.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin7.gif" /></li>
+                <li><input type="radio" /><img src="~/Content/images/images/yin8.gif" /></li>
+                <div class="clears"></div>
+            </ul>
+        </div><!--zhzhifufangshii/-->
+        <div class="zhifufangshi">
+            <ul class="yinhang">
+                <li><input type="radio" /><img src="~/Content/images/images/caifutong.jpg" /></li>
+                <div class="clear"></div>
+            </ul>
+        </div><!--zhzhifufangshii/-->
+        <div class="zhifufangshi">
+            <ul class="yinhang">
+                <li><input type="radio" /><img src="~/Content/images/images/zhifubao.jpg" /></li>
+                <div class="clear"></div>
+            </ul>
+        </div><!--zhzhifufangshii/-->
+
+        <input type="button" value="结算" onclick="pay()" />
+    </div>
+</body>
+</html>
+<script>
+    function pay() {
+        var index = 0;
+        var ids='@Request.QueryString["Ids"]';
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/UpdateOrders?Ids=" + ids +"&State=1",
+            type: "post",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                if (d > 0) {
+                    layer.msg('结算成功', {
+                        time: 20000, //20s后自动关闭
+                        btn: ['知道了'],
+                        end: function () {
+                            window.open('/UserInfos/MyOrder', 'main');
+                        }
+                    });
+                    
+                }
+                else {
+                    layer.msg('结算失败', {
+                        time: 20000//20s后自动关闭
+                    }); 
+                }
+            }
+        })
+    }
+</script>

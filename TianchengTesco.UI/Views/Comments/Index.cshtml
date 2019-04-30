@@ -1,0 +1,118 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Content/js/jquery-3.1.1.js"></script>
+    <script src="~/Content/js/page.js"></script>
+    <script src="~/Content/layer-v3.1.1/layer/layer.js"></script>
+    <link href="~/Content/layer-v3.1.1/layer/mobile/need/layer.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script>
+        $(function () {
+            if ($.cookie('UId') == null) {
+                this.location.href = '/Users/Login';
+            }
+        })
+    </script>
+    <style>
+        li {
+            width: 100px;
+            height: 30px;
+            border: 1px solid;
+            float: left;
+            overflow: hidden;
+            list-style-type: none;
+        }
+
+        ul {
+            width: 650px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>评论管理</h2>
+        <p>
+            <input type="text" name="UName" placeholder="购买人名称" />&nbsp;
+            <input type="text" name="GName" placeholder="商品名称" />&nbsp;
+            <input type="button" value="查询" onclick="search()" />&nbsp;
+        </p>
+        <ul>
+            <li>序号</li>
+            <li>商品名称</li>
+            <li>购买人</li>
+            <li>评论内容</li>
+            <li>回复内容</li>
+            <li>操作</li>
+        </ul>
+        <ul id="list"></ul>
+    </div>
+    <div style="clear:both">
+        <input type="button" value="首页" onclick="FirstPage()" />&nbsp;
+        <input type="button" value="上一页" onclick="PrivePage()" />&nbsp;
+        <input type="button" value="下一页" onclick="NextPage()" />&nbsp;
+        <input type="button" value="尾页" onclick="LastPage()" />&nbsp;
+    </div>
+</body>
+</html>
+<script>
+    show();
+    //显示
+    function show()
+    {
+        var index = 0;
+        $.ajax({
+            url: "http://139.159.183.14:8888/TianchengTesco/QueryComments?pageIndex=" + pageIndex + "&UName=" + $("[name=UName]").val() + "&GName=" + $("[name=GName]").val() + "&GId=0" + "&SId=" + $.cookie('SId'),
+            type: "post",
+            beforeSend: function () {
+                //loading层 var index = 0;
+                index = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete: function () {
+                layer.close(index);
+            },
+            success: function (d) {
+                console.log(d);
+                $("#list").html("");
+                pageIndex = d.PageIndex;
+                pageCount = d.PageCount;
+                for (var i = 0; i < d.Data.length; i++) {
+                    var li = '<li>' + (i+1) + '</li>'
+                        + '<li>' + d.Data[i].GName + '</li>'
+                        + '<li>' + d.Data[i].UName + '</li>'
+                        + '<li>' + d.Data[i].Remark + '</li>'
+                        + '<li>' + d.Data[i].Answer + '</li>'
+                        + '<li><a href="javascript:void(0)" onclick="upd(' + d.Data[i].Id + ',\'' + d.Data[i].Answer + '\')">回复</a></li>'
+                    $("#list").append(li);
+                }
+            }
+        })
+    }
+    //更新
+    function upd(id, Answer) {
+        if (Answer != 'null') {
+            layer.msg('该商品已回复', {
+                time: 20000 //20s后自动关闭
+            });  
+            return;
+        }
+        layer.open({
+            type: 2,//模态窗种类
+            skin: "layui-layer-rim",
+            title: "编辑信息",
+            area: ["400px", "500px"],
+            maxmin: true,
+            //拼接字符串自定义名称
+            content: '/Comments/Answer?Id='+id
+        });
+    }
+</script>
